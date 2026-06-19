@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pymongo
+python-dotenv
+insightface
+scikit-learn
+numpy
+python-multipart
+onnxruntime
+pydantic
