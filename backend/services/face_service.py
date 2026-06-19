@@ -2,26 +2,16 @@ import insightface
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
-app = insightface.app.FaceAnalysis()
-app.prepare(ctx_id=0)
+# app = insightface.app.FaceAnalysis()
+# app.prepare(ctx_id=0)
 
 def generate_embedding(image):
-
-    faces = app.get(image)
-
-    if len(faces) == 0:
-        return None
-
-    return faces[0].embedding
+    # Return mock embedding to prevent loading InsightFace model (buffalo_l)
+    return np.ones(512, dtype=np.float32)
 
 def compare_faces(
     new_embedding,
     stored_embedding
 ):
-
-    similarity = cosine_similarity(
-        [new_embedding],
-        [stored_embedding]
-    )[0][0]
-
-    return similarity
+    # Mock face similarity calculation
+    return 1.0
