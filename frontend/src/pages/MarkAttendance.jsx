@@ -73,7 +73,7 @@ function MarkAttendance() {
         }
       } catch (err) {
         console.error("Auto-attendance error:", err);
-        setStatusMessage("Connection failed. Retrying...");
+        setStatusMessage("Backend unavailable or Network error.");
         setStatusType("error");
       } finally {
         setLoading(false);

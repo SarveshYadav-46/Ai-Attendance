@@ -1,4 +1,4 @@
-function StudentTable({ students }) {
+function StudentTable({ students, onDelete }) {
   if (!students || students.length === 0) {
     return (
       <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center text-slate-400">
@@ -31,6 +31,7 @@ function StudentTable({ students }) {
               <th className="py-4 px-6">Course</th>
               <th className="py-4 px-6">Time / Date</th>
               <th className="py-4 px-6 text-right">Status</th>
+              {onDelete && <th className="py-4 px-6 text-right">Actions</th>}
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800/50">
@@ -73,6 +74,19 @@ function StudentTable({ students }) {
                     {student.status}
                   </span>
                 </td>
+                {onDelete && (
+                  <td className="py-4 px-6 text-right">
+                    <button
+                      onClick={() => onDelete(student.uid, student.date, student.time)}
+                      className="text-rose-400 hover:text-rose-300 bg-rose-950/30 hover:bg-rose-950/60 p-2 rounded-lg transition-colors"
+                      title="Delete Record"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

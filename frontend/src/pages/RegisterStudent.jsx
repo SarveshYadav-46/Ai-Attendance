@@ -23,7 +23,7 @@ function RegisterStudent() {
     
     const imageSrc = webcamRef.current?.getScreenshot();
     if (!imageSrc) {
-      setMessage("Could not capture image. Ensure webcam is active.");
+      setMessage("No camera permission or webcam not found.");
       setStatusType("error");
       return;
     }
@@ -54,7 +54,7 @@ function RegisterStudent() {
         setStatusType("error");
       }
     } catch (err) {
-      setMessage("Registration failed. Is the backend API running?");
+      setMessage("Backend unavailable or Network error.");
       setStatusType("error");
       console.error(err);
     }

@@ -6,7 +6,11 @@ from routes.student_routes import router as student_router
 from routes.attendance_routes import router as attendance_router
 from database import students_collection, attendance_collection
 
-app = FastAPI(title="AI Attendance System")
+app = FastAPI(
+    title="AI Face Attendance System",
+    description="MCA AI&ML Minor Project - Face Recognition Attendance System",
+    version="2.0.0"
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,35 +23,41 @@ app.add_middleware(
 app.include_router(student_router)
 app.include_router(attendance_router)
 
+
 @app.get("/")
 def home():
-    return {"message": "AI Attendance Backend Running"}
+    return {
+        "message": "AI Face Attendance System - Backend v2.0",
+        "status": "running",
+        "timestamp": datetime.now().isoformat()
+    }
+
 
 @app.get("/api/dashboard")
 def dashboard_stats():
     total_students = students_collection.count_documents({})
     today = datetime.now().strftime("%Y-%m-%d")
-    present_today = attendance_collection.count_documents({"date": today})
+    present_today = attendance_collection.count_documents({"date": today, "status": "Present"})
     absent_today = max(total_students - present_today, 0)
     attendance_pct = round((present_today / total_students * 100), 1) if total_students > 0 else 0.0
 
-    # Course Summary for MCA AI&ML, MCA, MBA, BCA, BBA
-    courses_summary = []
+    # Total attendance records
+    total_records = attendance_collection.count_documents({})
+
+    # Course Summary
     valid_courses = ["MCA AI&ML", "MCA", "MBA", "BCA", "BBA"]
+    courses_summary = []
     for c in valid_courses:
-        if c == "MCA":
-            total = students_collection.count_documents({"$or": [{"course": c}, {"course": {"$exists": False}}]})
-            present = attendance_collection.count_documents({"$or": [{"course": c}, {"course": {"$exists": False}}], "date": today})
-        else:
-            total = students_collection.count_documents({"course": c})
-            present = attendance_collection.count_documents({"course": c, "date": today})
-        
+        total = students_collection.count_documents({"course": c})
+        present = attendance_collection.count_documents({"course": c, "date": today})
         absent = max(total - present, 0)
+        att_pct = round((present / total * 100), 1) if total > 0 else 0
         courses_summary.append({
             "course": c,
             "totalStudents": total,
             "presentToday": present,
-            "absentToday": absent
+            "absentToday": absent,
+            "attendancePercentage": att_pct
         })
 
     # Recent 10 attendance records
@@ -57,11 +67,27 @@ def dashboard_stats():
         .limit(10)
     )
 
+    # Total distinct courses with students
+    total_courses = len([c for c in courses_summary if c["totalStudents"] > 0])
+
     return {
         "totalStudents": total_students,
         "presentToday": present_today,
         "absentToday": absent_today,
         "attendancePercentage": attendance_pct,
+        "totalCourses": total_courses,
+        "totalRecords": total_records,
         "courses": courses_summary,
-        "recentAttendance": recent_attendance
+        "recentAttendance": recent_attendance,
+        "date": today
     }
+
+
+@app.get("/health")
+def health_check():
+    try:
+        # Test MongoDB connection
+        students_collection.find_one({})
+        return {"status": "healthy", "database": "connected", "timestamp": datetime.now().isoformat()}
+    except Exception as e:
+        return {"status": "unhealthy", "database": "disconnected", "error": str(e)}
