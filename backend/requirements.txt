@@ -1,6 +1,6 @@
 fastapi
 uvicorn
-pymongo
+pymongo[srv]
 python-dotenv
 insightface
 scikit-learn
@@ -8,3 +8,4 @@ numpy
 python-multipart
 onnxruntime
 pydantic
+certifi
