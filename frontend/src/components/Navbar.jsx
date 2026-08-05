@@ -43,12 +43,7 @@ function Navbar() {
             <Link to="/register" className={linkClass("/register")}>
               Register
             </Link>
-            <Link to="/analytics" className={linkClass("/analytics")}>
-              Analytics
-            </Link>
-            <Link to="/calendar" className={linkClass("/calendar")}>
-              Calendar
-            </Link>
+
           </div>
         </div>
       </div>

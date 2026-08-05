@@ -44,21 +44,8 @@ def dashboard_stats():
     # Total attendance records
     total_records = attendance_collection.count_documents({})
 
-    # Course Summary
-    valid_courses = ["MCA AI&ML", "MCA", "MBA", "BCA", "BBA"]
-    courses_summary = []
-    for c in valid_courses:
-        total = students_collection.count_documents({"course": c})
-        present = attendance_collection.count_documents({"course": c, "date": today})
-        absent = max(total - present, 0)
-        att_pct = round((present / total * 100), 1) if total > 0 else 0
-        courses_summary.append({
-            "course": c,
-            "totalStudents": total,
-            "presentToday": present,
-            "absentToday": absent,
-            "attendancePercentage": att_pct
-        })
+    # Total distinct courses with students
+    total_courses = 5
 
     # Recent 10 attendance records
     recent_attendance = list(
@@ -67,9 +54,6 @@ def dashboard_stats():
         .limit(10)
     )
 
-    # Total distinct courses with students
-    total_courses = len([c for c in courses_summary if c["totalStudents"] > 0])
-
     return {
         "totalStudents": total_students,
         "presentToday": present_today,
@@ -77,7 +61,6 @@ def dashboard_stats():
         "attendancePercentage": attendance_pct,
         "totalCourses": total_courses,
         "totalRecords": total_records,
-        "courses": courses_summary,
         "recentAttendance": recent_attendance,
         "date": today
     }

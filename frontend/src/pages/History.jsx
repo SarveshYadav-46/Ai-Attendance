@@ -3,9 +3,7 @@ import Navbar from "../components/Navbar";
 import StudentTable from "../components/StudentTable";
 import { getAttendanceHistory, deleteAttendanceRecord } from "../services/api";
 import toast from "react-hot-toast";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
-import * as XLSX from "xlsx";
+
 
 function History() {
   const [records, setRecords] = useState([]);
@@ -78,47 +76,7 @@ function History() {
     }
   };
 
-  // Export functions
-  const handleExportCSV = () => {
-    const header = ["UID", "Name", "Course", "Date", "Time", "Status"];
-    const rows = records.map(r => [r.uid, r.name, r.course, r.date, r.time, r.status]);
-    const csvContent = [header, ...rows].map(e => e.join(",")).join("\n");
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", "attendance_history.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
-  const handleExportExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(records.map(r => ({
-      UID: r.uid,
-      Name: r.name,
-      Course: r.course,
-      Date: r.date,
-      Time: r.time,
-      Status: r.status
-    })));
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Attendance");
-    XLSX.writeFile(workbook, "attendance_history.xlsx");
-  };
-
-  const handleExportPDF = () => {
-    const doc = new jsPDF();
-    doc.text("Attendance History", 14, 15);
-    const tableColumn = ["UID", "Name", "Course", "Date", "Time", "Status"];
-    const tableRows = records.map(r => [r.uid, r.name, r.course, r.date, r.time, r.status]);
-    doc.autoTable({
-      head: [tableColumn],
-      body: tableRows,
-      startY: 20
-    });
-    doc.save("attendance_history.pdf");
-  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
@@ -134,11 +92,7 @@ function History() {
               Search, filter, and export attendance records.
             </p>
           </div>
-          <div className="flex gap-2">
-            <button onClick={handleExportCSV} className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded text-sm transition-colors border border-slate-700">CSV</button>
-            <button onClick={handleExportExcel} className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded text-sm transition-colors border border-slate-700">Excel</button>
-            <button onClick={handleExportPDF} className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded text-sm transition-colors border border-slate-700">PDF</button>
-          </div>
+
         </div>
 
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">

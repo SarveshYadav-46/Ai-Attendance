@@ -96,21 +96,7 @@ export const getDashboardStats = async () => {
   return response.data;
 };
 
-// ─── Analytics ────────────────────────────────────────────────────────────────
 
-export const getAnalytics = async () => {
-  const response = await API.get("/analytics");
-  return response.data;
-};
-
-// ─── Calendar ─────────────────────────────────────────────────────────────────
-
-export const getCalendarData = async (month, year, course = "") => {
-  const response = await API.get("/calendar", {
-    params: { month, year, course },
-  });
-  return response.data;
-};
 
 // ─── Health ───────────────────────────────────────────────────────────────────
 

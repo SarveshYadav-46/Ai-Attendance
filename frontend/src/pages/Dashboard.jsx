@@ -113,33 +113,6 @@ function Dashboard() {
               <StatCard title="Total Records" value={stats.totalRecords || 0} color="cyan" />
             </div>
 
-            {/* Course-wise Statistics */}
-            <div className="flex flex-col gap-4">
-              <h2 className="text-xl font-bold text-slate-200">Course-wise Statistics</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                {stats.courses && stats.courses.map((c) => (
-                  <div 
-                    key={c.course}
-                    onClick={() => handleCourseClick(c.course)}
-                    className={`bg-slate-900 border rounded-2xl p-5 shadow-lg flex flex-col justify-between cursor-pointer transition-all ${selectedCourseFilter === c.course ? 'border-indigo-500 ring-2 ring-indigo-500/20' : 'border-slate-800 hover:border-slate-700'}`}
-                  >
-                    <h4 className="text-sm font-extrabold text-indigo-400 uppercase">{c.course}</h4>
-                    <div className="mt-4 space-y-2 text-xs">
-                      <div className="flex justify-between"><span className="text-slate-400">Total</span><span className="font-bold">{c.totalStudents}</span></div>
-                      <div className="flex justify-between"><span className="text-emerald-400">Present</span><span className="font-bold">{c.presentToday}</span></div>
-                      <div className="flex justify-between"><span className="text-rose-400">Absent</span><span className="font-bold">{c.absentToday}</span></div>
-                    </div>
-                    <div className="mt-4 pt-3 border-t border-slate-800/60">
-                      <div className="flex justify-between text-[11px] text-slate-400 mb-1">
-                        <span>Attendance</span>
-                        <span>{c.attendancePercentage}%</span>
-                      </div>
-                      <div className="w-full bg-slate-800 rounded-full h-1.5"><div className="bg-indigo-500 h-1.5 rounded-full" style={{ width: `${c.attendancePercentage}%` }} /></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
 
             {/* Student Management Table */}
             <div className="flex flex-col gap-4">

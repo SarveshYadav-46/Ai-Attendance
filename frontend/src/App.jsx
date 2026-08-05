@@ -5,9 +5,6 @@ import Dashboard from "./pages/Dashboard";
 import RegisterStudent from "./pages/RegisterStudent";
 import MarkAttendance from "./pages/MarkAttendance";
 import History from "./pages/History";
-import Analytics from "./pages/Analytics";
-import Calendar from "./pages/Calendar";
-
 function App() {
   return (
     <BrowserRouter>
@@ -34,8 +31,6 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<RegisterStudent />} />
         <Route path="/history" element={<History />} />
-        <Route path="/analytics" element={<Analytics />} />
-        <Route path="/calendar" element={<Calendar />} />
       </Routes>
     </BrowserRouter>
   );
