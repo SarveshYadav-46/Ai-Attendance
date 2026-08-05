@@ -184,11 +184,7 @@ def delete_student(uid: str):
     }
 
 
-@router.delete("/attendance/{record_id}")
-def delete_attendance_record(record_id: str):
-    """Delete a specific attendance record by uid+date+time combo"""
-    # We'll use uid+date+time as identifier since we don't expose _id
-    return {"success": False, "message": "Use uid, date, time parameters"}
+
 
 
 @router.delete("/attendance")
